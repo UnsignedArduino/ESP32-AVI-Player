@@ -16,5 +16,5 @@ An AVI video player for the M5Stack Core2.
 We use Cinepak as the video codec and MP3 as the audio codec.
 
 ```cmd
-ffmpeg -i INPUT.mp4 -c:a mp3 -c:v cinepak -q:v 10 -vf "fps=15,scale=iw*min(1\,if(gt(iw\,ih)\,320/iw\,(240*sar)/ih)):(floor((ow/dar)/4))*4:flags=lanczos" OUTPUT.avi
+ffmpeg -i INPUT.mp4 -c:a mp3 -ar 22050 -ac 1 -sample_fmt s16 -c:v cinepak -q:v 10 -vf "fps=15,scale=iw*min(1\,if(gt(iw\,ih)\,320/iw\,(240*sar)/ih)):(floor((ow/dar)/4))*4:flags=lanczos" OUTPUT.avi
 ```
