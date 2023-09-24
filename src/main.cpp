@@ -86,12 +86,16 @@ void loop() {
             skipped_last_frame = false;
             decoder.decodeFrame((uint8_t*)vidbuf, actual_video_size, output_buf, output_buf_size);
             // gfx->draw16bitBeRGBBitmap(0, 0, output_buf, w, h);
-            M5.Lcd.drawBitmap(0, 0, w, h, output_buf);
+            // M5.Lcd.drawBitmap(0, 0, w, h, output_buf);
+            bool swap = M5.Lcd.getSwapBytes();
+            M5.Lcd.setSwapBytes(false);
+            M5.Lcd.pushImage(0, 0, w, h, output_buf);
+            M5.Lcd.setSwapBytes(swap);
           }
-          // else
-          // {
-          //   ++skipped_frames;
-          // }
+          else
+          {
+            ++skipped_frames;
+          }
         }
         while (millis() < next_frame_ms) {
           vTaskDelay(pdMS_TO_TICKS(1));
@@ -99,7 +103,7 @@ void loop() {
       } else {
         ++skipped_frames;
         skipped_last_frame = true;
-        // Serial.printf("Skip frame %d > %d\n", millis(), next_frame_ms);
+        Serial.printf("Skip frame %d > %d\n", millis(), next_frame_ms);
       }
 
       ++curr_frame;
